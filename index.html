@@ -572,9 +572,9 @@ $('#video').addEventListener('click',e=>{if(e.target.closest('.dock')||e.target.
   if(dock.classList.contains('show'))hideControls();else showControls();});
 
 /* 10s timestamp → minimal video-language widget floating above the dock */
-function showLangWidget(){$('#video').classList.add('langmoment');clearTimeout(widgetT);widgetT=setTimeout(hideLangWidget,15000);}
-function hideLangWidget(){clearTimeout(widgetT);$('#video').classList.remove('langmoment');}
-$('#langWidget').addEventListener('click',e=>{e.stopPropagation();clearTimeout(widgetT);widgetT=setTimeout(hideLangWidget,15000);});
+function showLangWidget(){$('#video').classList.add('langmoment');clearTimeout(hideT);dock.classList.add('show');clearTimeout(widgetT);widgetT=setTimeout(hideLangWidget,15000);}
+function hideLangWidget(){clearTimeout(widgetT);$('#video').classList.remove('langmoment');dock.classList.remove('show');}
+$('#langWidget').addEventListener('click',e=>{clearTimeout(widgetT);widgetT=setTimeout(hideLangWidget,15000);});
 function triggerMoment(){show('video');showLangWidget();}
 
 /* language: both settings-sheet #langSeg and widget #wLangSeg drive vlang */
