@@ -121,6 +121,29 @@ body{background:#1d1d1f;min-height:100vh;display:flex;align-items:center;justify
 .taphand img{width:100%;height:100%;object-fit:contain}
 @keyframes tap{0%,100%{transform:translateY(0)}45%{transform:translateY(-7px)}}
 
+/* settings bottom sheet (gear) + minimal timestamp lang widget */
+.setdim2{position:absolute;inset:0;z-index:19;background:rgba(6,4,2,.62);opacity:0;visibility:hidden;transition:.35s var(--ease)}
+.screen.setopen .setdim2{opacity:1;visibility:visible}
+.setsheet{position:absolute;left:0;right:0;bottom:0;z-index:20;
+  background:linear-gradient(180deg,#261c11 0%,#180f09 62%,#110c07 100%);
+  border-top:1px solid rgba(255,224,176,.14);border-radius:26px 26px 0 0;
+  padding:10px 20px calc(20px + env(safe-area-inset-bottom));
+  transform:translateY(112%);transition:transform .44s var(--ease);box-shadow:0 -24px 60px -20px rgba(0,0,0,.72)}
+.screen.setopen .setsheet{transform:translateY(0)}
+.ss-grab{width:42px;height:5px;border-radius:5px;background:rgba(255,255,255,.2);margin:2px auto 6px}
+.ss-head{display:flex;align-items:center;justify-content:space-between;padding:4px 2px 6px}
+.ss-head .t{font-size:16px;font-weight:600;color:#f2ece2}
+.ss-head .x{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.ss-head .x svg{width:15px;height:15px;stroke:#e9dfce;stroke-width:2.4;fill:none}
+.langwidget{position:absolute;left:50%;bottom:200px;transform:translateX(-50%) translateY(12px);z-index:15;padding:8px;border-radius:16px;
+  background:linear-gradient(180deg,rgba(52,43,29,.72),rgba(28,22,14,.82));backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+  border:1px solid rgba(255,224,176,.2);box-shadow:0 14px 40px -14px rgba(0,0,0,.7);
+  opacity:0;visibility:hidden;transition:opacity .38s var(--ease),transform .38s var(--ease)}
+.screen.langmoment .langwidget{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.langwidget .seg{background:rgba(0,0,0,.28)}
+.langwidget .taphand{position:absolute;right:-4px;bottom:-32px;width:58px;height:58px;pointer-events:none;display:none;filter:drop-shadow(0 3px 5px rgba(0,0,0,.5))}
+.screen.langmoment .langwidget .taphand{display:block;animation:tap 1.2s var(--ease) infinite}
+
 /* ============ SWITCH WARNING + LOADING ============ */
 .vdim{position:absolute;inset:0;z-index:22;background:rgba(6,4,2,.62);opacity:0;visibility:hidden;transition:.35s var(--ease)}
 .screen.warn .vdim,.screen.loading .vdim{opacity:1;visibility:visible}
@@ -332,29 +355,10 @@ if(location.protocol.indexOf('http')===0)document.documentElement.style.zoom='0.
         <div class="tr" id="capTr">¡Hola! Bienvenido a Stimuler</div>
       </div>
 
+      <!-- transport dock: slim media controls only -->
       <div class="dock" id="dock">
-        <div class="panel">
-          <div class="panel-in">
-            <div class="crow">
-              <div class="plabel"><div class="t">Video language</div>
-                <div class="seg pri" id="langSeg"><button class="sel" data-lang="en">English</button><button data-lang="es">Español</button></div>
-              </div>
-            </div>
-            <div class="crow" id="subRow">
-              <div class="plabel"><div class="t">Subtitles</div>
-                <div class="seg" id="subSeg"><button class="sel" data-sub="en">English</button><button data-sub="both">Eng + Esp</button></div>
-              </div>
-            </div>
-            <div class="crow">
-              <div class="plabel"><div class="t">Playback speed</div><div class="spd-val" id="spdVal">1.0×</div></div>
-              <div class="sld" id="speed" data-min="0.5" data-max="2" data-step="0.1" data-value="1">
-                <div class="tr"></div><div class="fl"></div><div class="kn" id="skn"></div>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="transport">
-          <div class="d-translate" id="translate" title="Change subtitle language"><img src="assets/fig/ic-translate.svg" alt=""></div>
+          <div class="d-translate" id="translate" title="Subtitles & language"><img src="assets/fig/ic-translate.svg" alt=""></div>
           <div class="d-mid">
             <div class="skip" id="rew"><img src="assets/fig/ic-replay10.svg" alt=""></div>
             <div class="d-play" id="play"><img src="assets/fig/ic-play.svg" alt=""></div>
@@ -362,7 +366,35 @@ if(location.protocol.indexOf('http')===0)document.documentElement.style.zoom='0.
           </div>
           <div class="d-speed" id="dspeed">1.0x</div>
         </div>
+      </div>
+
+      <!-- timestamp video-language widget (minimal), floats above the dock -->
+      <div class="langwidget" id="langWidget">
+        <div class="seg pri" id="wLangSeg"><button class="sel" data-lang="en">English</button><button data-lang="es">Español</button></div>
         <div class="taphand"><img src="assets/fig/tap-hand.png" alt=""></div>
+      </div>
+
+      <!-- settings bottom sheet (opened by gear or translate) -->
+      <div class="setdim2" id="setDim2"></div>
+      <div class="setsheet" id="setSheet">
+        <div class="ss-grab"></div>
+        <div class="ss-head"><div class="t">Lesson settings</div><div class="x" id="ssClose"><svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div></div>
+        <div class="crow">
+          <div class="plabel"><div class="t">Video language</div>
+            <div class="seg pri" id="langSeg"><button class="sel" data-lang="en">English</button><button data-lang="es">Español</button></div>
+          </div>
+        </div>
+        <div class="crow" id="subRow">
+          <div class="plabel"><div class="t">Subtitles</div>
+            <div class="seg" id="subSeg"><button class="sel" data-sub="en">English</button><button data-sub="both">Eng + Esp</button></div>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="plabel"><div class="t">Playback speed</div><div class="spd-val" id="spdVal">1.0×</div></div>
+          <div class="sld" id="speed" data-min="0.5" data-max="2" data-step="0.1" data-value="1">
+            <div class="tr"></div><div class="fl"></div><div class="kn" id="skn"></div>
+          </div>
+        </div>
       </div>
 
       <div class="vdim" id="vDim"></div>
@@ -509,7 +541,7 @@ function stopCaps(){clearInterval(capTimer);}
 /* nav + flow */
 let lessonTimer=null;
 function playVideo(){const v=document.querySelector('#video video');if(v){v.muted=true;try{v.currentTime=0;v.play();}catch(e){}}}
-function show(id){$$('.screen').forEach(s=>s.classList.toggle('on',s.id===id));if(id==='main')$('#main').scrollTop=0;$('.status').style.display=(id==='video'||id==='reading'||id==='settings')?'flex':'none';if(id!=='video'){clearTimeout(lessonTimer);stopCaps();}}
+function show(id){$$('.screen').forEach(s=>s.classList.toggle('on',s.id===id));if(id==='main')$('#main').scrollTop=0;$('.status').style.display=(id==='video'||id==='reading'||id==='settings')?'flex':'none';if(id!=='video'){clearTimeout(lessonTimer);stopCaps();$('#video').classList.remove('setopen','langmoment');dock.classList.remove('show');}}
 function startLessonFlow(){show('video');resetVideo();playVideo();clearTimeout(lessonTimer);lessonTimer=setTimeout(triggerMoment,10000);toast('Lesson playing…');}
 function startFlow(){resetVideo();show('main');}
 $('#startLesson').onclick=startLessonFlow;
@@ -517,55 +549,63 @@ $('#vBack').onclick=()=>{show('main');closeDock();};
 $('#rBack').onclick=()=>show('video');
 $('#vFlag').onclick=$('#rFlag').onclick=()=>toast('Report a problem');
 
-/* dock: hidden by default; reveal on tap or guidance, auto-fade */
-let idle=null,hideT=null;
-function clearT(){clearTimeout(idle);clearTimeout(hideT);}
-function showControls(){clearT();dock.classList.add('show');dock.classList.remove('open','moment');$('#vGear').classList.remove('hl','spin');hideT=setTimeout(hideControls,3200);}
-function armOpen(){clearT();idle=setTimeout(hideControls,15000);}
-const arm=armOpen;
-function openDock(moment){clearT();dock.classList.add('show','open');if(moment)dock.classList.add('moment');armOpen();}
-function hideControls(){clearT();dock.classList.remove('show','open','moment');$('#vGear').classList.remove('hl','spin');}
+/* transport dock: slim controls, hidden by default; reveal on tap, auto-fade */
+let hideT=null,widgetT=null;
+function showControls(){clearTimeout(hideT);dock.classList.add('show');hideT=setTimeout(hideControls,3200);}
+function hideControls(){clearTimeout(hideT);dock.classList.remove('show');}
 const closeDock=hideControls;
-dock.addEventListener('click',e=>e.stopPropagation());
-dock.addEventListener('pointerdown',()=>{if(dock.classList.contains('open'))armOpen();else if(dock.classList.contains('show'))showControls();});
-$('#vGear').onclick=e=>{e.stopPropagation();if(dock.classList.contains('open')){hideControls();return;}$('#vGear').classList.add('hl','spin');dock.classList.add('show');setTimeout(()=>openDock(false),420);};
-$('#translate').onclick=e=>{e.stopPropagation();if(!dock.classList.contains('open'))openDock(false);};
-$('#video').addEventListener('click',e=>{if(e.target.closest('.dock')||e.target.closest('.rchip')||e.target.closest('.back')||e.target.closest('.warnsheet')||e.target.closest('.loadbox')||e.target.closest('.vdim'))return;
+dock.addEventListener('click',e=>{e.stopPropagation();clearTimeout(hideT);hideT=setTimeout(hideControls,3200);});
+
+/* settings bottom sheet (gear) */
+function openSetSheet(){$('#video').classList.add('setopen');}
+function closeSetSheet(){$('#video').classList.remove('setopen');}
+$('#vGear').onclick=e=>{e.stopPropagation();openSetSheet();};
+$('#ssClose').onclick=closeSetSheet;$('#setDim2').onclick=closeSetSheet;
+$('#setSheet').addEventListener('click',e=>e.stopPropagation());
+
+/* translate icon: directly toggle subtitles English <-> Eng+Esp (inactive when the video is in Spanish) */
+function setSub(kind){$$('#subSeg button').forEach(x=>x.classList.toggle('sel',x.dataset.sub===kind));$('#vCaps').classList.toggle('nosub',kind!=='both');}
+$('#translate').onclick=e=>{e.stopPropagation();if(vlang==='es')return;const sel=$('#subSeg button.sel');setSub(sel&&sel.dataset.sub==='both'?'en':'both');showControls();};
+
+/* tap the video toggles the transport controls */
+$('#video').addEventListener('click',e=>{if(e.target.closest('.dock')||e.target.closest('.langwidget')||e.target.closest('.setsheet')||e.target.closest('.setdim2')||e.target.closest('.rchip')||e.target.closest('.back')||e.target.closest('.warnsheet')||e.target.closest('.loadbox')||e.target.closest('.vdim'))return;
   if(dock.classList.contains('show'))hideControls();else showControls();});
 
-function triggerMoment(){show('video');$('#vGear').classList.add('hl','spin');setTimeout(()=>{openDock(true);toast('Sarah: “would you like to change the language?”');},700);}
+/* 10s timestamp → minimal video-language widget floating above the dock */
+function showLangWidget(){$('#video').classList.add('langmoment');clearTimeout(widgetT);widgetT=setTimeout(hideLangWidget,15000);}
+function hideLangWidget(){clearTimeout(widgetT);$('#video').classList.remove('langmoment');}
+$('#langWidget').addEventListener('click',e=>{e.stopPropagation();clearTimeout(widgetT);widgetT=setTimeout(hideLangWidget,15000);});
+function triggerMoment(){show('video');showLangWidget();}
 
-/* language dependency */
+/* language: both settings-sheet #langSeg and widget #wLangSeg drive vlang */
 let vlang='en';
-function applyLang(){const es=vlang==='es';$('#subSeg').classList.toggle('off',es);$('#translate').style.opacity=es?'.3':'.55';
-  if(es)$$('#subSeg button').forEach(b=>b.classList.remove('sel'));}
-$('#langSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+function syncLangSegs(){$$('#langSeg button, #wLangSeg button').forEach(b=>b.classList.toggle('sel',b.dataset.lang===vlang));}
+function applyLang(){const es=vlang==='es';$('#subSeg').classList.toggle('off',es);$('#translate').style.opacity=es?'.35':'.85';
+  if(es)$$('#subSeg button').forEach(b=>b.classList.remove('sel'));syncLangSegs();}
+$('#video').addEventListener('click',e=>{const b=e.target.closest('#langSeg button, #wLangSeg button');if(!b)return;e.stopPropagation();
   if(b.dataset.lang==='es'&&vlang!=='es'){openWarn();return;}
-  if(b.dataset.lang==='en'&&vlang!=='en')toEnglish();arm();});
+  if(b.dataset.lang==='en'&&vlang!=='en')toEnglish();});
 $('#subSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||vlang==='es')return;
   $$('#subSeg button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');
-  $('#vCaps').classList.toggle('nosub',b.dataset.sub!=='both');arm();});
+  $('#vCaps').classList.toggle('nosub',b.dataset.sub!=='both');});
 
-/* switch spanish */
+/* switch to Spanish: warning → loading → restart */
 function openWarn(){$('#video').classList.add('warn');}
 function closeWarn(){$('#video').classList.remove('warn');}
-$('#warnCancel').onclick=()=>{closeWarn();$$('#langSeg button').forEach((b,i)=>b.classList.toggle('sel',i===0));toast('Keeping English');};
+$('#warnCancel').onclick=()=>{closeWarn();vlang='en';applyLang();};
 $('#warnSure').onclick=()=>{closeWarn();$('#video').classList.add('loading');setTimeout(()=>{$('#video').classList.remove('loading');toSpanish();},2200);};
-function toSpanish(){vlang='es';$$('#langSeg button').forEach(b=>b.classList.toggle('sel',b.dataset.lang==='es'));
-  $('#vCaps').classList.add('nosub');applyLang();closeDock();playVideo();startCaps();clearTimeout(lessonTimer);lessonTimer=setTimeout(goReading,3800);}
-function goReading(){closeDock();const a=$('#vAvatar'),r=$('#vRing');
+function toSpanish(){vlang='es';$('#vCaps').classList.add('nosub');applyLang();hideLangWidget();closeSetSheet();hideControls();playVideo();startCaps();clearTimeout(lessonTimer);lessonTimer=setTimeout(goReading,3800);}
+function goReading(){hideControls();const a=$('#vAvatar'),r=$('#vRing');
   a.style.transform='translateY(-130px) scale(.5)';a.style.opacity='0';r.style.transform='translateY(-130px) scale(.5)';r.style.opacity='0';
   setTimeout(()=>{show('reading');a.style.transform='';a.style.opacity='';r.style.transform='';r.style.opacity='';
     const rv=document.querySelector('#reading video');if(rv){rv.muted=true;try{rv.play();}catch(e){}}
     $('#rFill').style.width='0';setTimeout(()=>$('#rFill').style.width='58%',260);},560);}
-function toEnglish(){vlang='en';$$('#langSeg button').forEach(b=>b.classList.toggle('sel',b.dataset.lang==='en'));
-  $$('#subSeg button').forEach((b,i)=>b.classList.toggle('sel',i===0));$('#vCaps').classList.add('nosub');applyLang();startCaps();}
+function toEnglish(){vlang='en';$$('#subSeg button').forEach((b,i)=>b.classList.toggle('sel',i===0));$('#vCaps').classList.add('nosub');applyLang();startCaps();}
 $('#play').onclick=function(){};
 $('#rew').onclick=$('#fwd').onclick=()=>{};
 
-function resetVideo(){vlang='en';$$('#langSeg button').forEach((b,i)=>b.classList.toggle('sel',i===0));
-  $$('#subSeg button').forEach((b,i)=>b.classList.toggle('sel',i===0));
-  $('#vCaps').classList.add('nosub');applyLang();closeDock();closeWarn();$('#video').classList.remove('loading');startCaps();}
+function resetVideo(){vlang='en';$$('#subSeg button').forEach((b,i)=>b.classList.toggle('sel',i===0));
+  $('#vCaps').classList.add('nosub');applyLang();hideControls();hideLangWidget();closeSetSheet();closeWarn();$('#video').classList.remove('loading');startCaps();}
 
 /* reading */
 $('#rGear').onclick=()=>$('#reading').classList.toggle('rsopen');
@@ -578,7 +618,7 @@ $('#rMic').onclick=function(){this.classList.toggle('live');toast('🎙 Listenin
 (function(){const sl=$('#speed');const fl=sl.querySelector('.fl'),kn=$('#skn'),val=$('#spdVal');
   const min=+sl.dataset.min,max=+sl.dataset.max,step=+sl.dataset.step,steps=Math.round((max-min)/step);let idx=Math.round((1-min)/step);
   function r(){const p=idx/steps*100,v=min+idx*step;fl.style.width=p+'%';kn.style.left=p+'%';val.textContent=v.toFixed(1)+'×';$('#dspeed').textContent=v.toFixed(1)+'x';}
-  function setX(x){const b=sl.getBoundingClientRect();let p=(x-b.left)/b.width;p=Math.max(0,Math.min(1,p));idx=Math.round(p*steps);r();arm();}
+  function setX(x){const b=sl.getBoundingClientRect();let p=(x-b.left)/b.width;p=Math.max(0,Math.min(1,p));idx=Math.round(p*steps);r();}
   let drag=false;sl.addEventListener('pointerdown',e=>{drag=true;sl.setPointerCapture(e.pointerId);setX(e.clientX);});
   sl.addEventListener('pointermove',e=>{if(drag)setX(e.clientX);});sl.addEventListener('pointerup',()=>drag=false);r();})();
 
@@ -626,6 +666,7 @@ $('#chips').addEventListener('click',e=>{
 /* deep links for QA */
 const h=location.hash.slice(1);
 if(h==='video')startLessonFlow();else if(h==='moment'){show('video');resetVideo();triggerMoment();}
+else if(h==='setsheet'){show('video');resetVideo();openSetSheet();}
 else if(h==='warn'){show('video');resetVideo();openWarn();}
 else if(h==='reading'){show('reading');setTimeout(()=>$('#rFill').style.width='58%',200);}
 else if(h==='readingrs'){show('reading');setTimeout(()=>{$('#rFill').style.width='58%';$('#reading').classList.add('rsopen');},200);}
@@ -638,7 +679,7 @@ $('.status').style.display=($('#video').classList.contains('on')||$('#reading').
 /* universal: pause background video + dim when a bottom sheet / popup is open */
 function syncOverlays(){
   const vscr=$('#video'),rscr=$('#reading');
-  const vBlock=vscr.classList.contains('warn')||vscr.classList.contains('loading');
+  const vBlock=vscr.classList.contains('warn')||vscr.classList.contains('loading')||vscr.classList.contains('setopen');
   const vv=vscr.querySelector('video');if(vv){try{vBlock?vv.pause():(vscr.classList.contains('on')&&vv.play());}catch(e){}}
   const rOpen=rscr.classList.contains('rsopen');
   $('#rSheetDim').classList.toggle('on',rOpen);
