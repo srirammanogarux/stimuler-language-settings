@@ -584,9 +584,9 @@ $('#rMic').onclick=function(){this.classList.toggle('live');toast('🎙 Listenin
 
 /* ===== settings page (3 language cases) ===== */
 const CASES={
- 1:{mt:'Japanese',mtNote:'',app:['Japanese','English'],appDef:'Japanese',videoFixed:'English',videoNote:'Video lessons are in English for your region'},
- 2:{mt:'Español',mtNote:'Set from your region · Spanish-speaking LATAM',app:['Español','English'],appDef:'English',video:['Español','English'],videoDef:'English'},
- 3:{mt:'Español',mtNote:'',app:['Español','English'],appDef:'Español',video:['English','Español'],videoDef:'English'}
+ 1:{mt:'Japanese',app:['English','Japanese'],appDef:'Japanese',videoFixed:'English'},
+ 2:{mt:'Español',app:['English','Español'],appDef:'English',video:['English','Español'],videoDef:'English'},
+ 3:{mt:'Español',app:['English','Español'],appDef:'Español',video:['English','Español'],videoDef:'English'}
 };
 function segHTML(opts,def,kind){return '<div class="seg lang-seg" data-kind="'+kind+'">'+opts.map(o=>'<button class="'+(o===def?'sel':'')+'">'+o+'</button>').join('')+'</div>';}
 function langRow(label,control,note){return '<div class="set-row tall"><div class="toprow"><span class="lb">'+label+'</span>'+control+'</div>'+(note?'<div class="set-note">'+note+'</div>':'')+'</div>';}
