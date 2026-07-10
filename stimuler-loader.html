@@ -1,0 +1,227 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:transparent;overflow:hidden}
+body{display:grid;place-items:center}
+.mark-stage{position:relative;width:90px;height:90px}
+.icon{position:absolute;top:50%;left:50%;transform-origin:center;overflow:visible;will-change:transform,opacity}
+#feedbackIcon{width:54px;height:54px;margin:-27px 0 0 -27px}
+#feedbackIcon path{fill:#F3C24B}
+#stimulerLogo{width:76px;height:76px;margin:-38px 0 0 -38px;opacity:0}
+#feedbackIcon{transform:translateX(0px) rotate(0deg) scale(1)}
+#stimulerLogo{transform:scale(0)}
+</style></head><body>
+<div class="mark-stage">
+          <!-- Feedback / center anchor — original Feedback.svg -->
+          <svg id="feedbackIcon" class="icon" viewBox="0 0 40 40" fill="none">
+            <path d="M15.1756 9.07968C16.1722 6.16301 20.2022 6.07467 21.3839 8.81468L21.4839 9.08134L22.8289 13.0147C23.1372 13.9167 23.6353 14.7422 24.2896 15.4354C24.944 16.1286 25.7394 16.6734 26.6222 17.033L26.9839 17.168L30.9172 18.5113C33.8339 19.508 33.9222 23.538 31.1839 24.7197L30.9172 24.8197L26.9839 26.1647C26.0815 26.4727 25.2558 26.9707 24.5623 27.6251C23.8688 28.2795 23.3237 29.075 22.9639 29.958L22.8289 30.318L21.4856 34.253C20.4889 37.1697 16.4589 37.258 15.2789 34.5197L15.1756 34.253L13.8322 30.3197C13.5242 29.4173 13.0262 28.5915 12.3718 27.898C11.7174 27.2046 10.9219 26.6595 10.0389 26.2997L9.67891 26.1647L5.74558 24.8213C2.82724 23.8247 2.73891 19.7947 5.47891 18.6147L5.74558 18.5113L9.67891 17.168C10.581 16.8598 11.4064 16.3617 12.0996 15.7073C12.7928 15.0529 13.3376 14.2575 13.6972 13.3747L13.8322 13.0147L15.1756 9.07968ZM18.3306 10.1563L16.9872 14.0897C16.5179 15.4652 15.7544 16.7218 14.7498 17.7722C13.7453 18.8225 12.5238 19.6412 11.1706 20.1713L10.7539 20.323L6.82058 21.6663L10.7539 23.0097C12.1294 23.479 13.3861 24.2426 14.4364 25.2471C15.4867 26.2517 16.3055 27.4731 16.8356 28.8263L16.9872 29.243L18.3306 33.1763L19.6739 29.243C20.1433 27.8675 20.9068 26.6108 21.9114 25.5605C22.9159 24.5102 24.1373 23.6915 25.4906 23.1613L25.9072 23.0113L29.8406 21.6663L25.9072 20.323C24.5317 19.8537 23.2751 19.0901 22.2248 18.0856C21.1744 17.081 20.3557 15.8596 19.8256 14.5063L19.6756 14.0897L18.3306 10.1563ZM31.6639 3.33301C31.9757 3.33301 32.2813 3.42047 32.5458 3.58546C32.8104 3.75045 33.0234 3.98635 33.1606 4.26634L33.2406 4.46134L33.8239 6.17134L35.5356 6.75467C35.848 6.86083 36.122 7.05737 36.3226 7.31937C36.5233 7.58137 36.6416 7.89704 36.6627 8.22638C36.6838 8.55571 36.6066 8.88389 36.4409 9.16932C36.2753 9.45475 36.0286 9.68457 35.7322 9.82967L35.5356 9.90968L33.8256 10.493L33.2422 12.2047C33.1359 12.5171 32.9392 12.7908 32.6771 12.9913C32.415 13.1918 32.0993 13.31 31.77 13.3309C31.4407 13.3518 31.1125 13.2744 30.8272 13.1086C30.5419 12.9429 30.3122 12.6961 30.1672 12.3997L30.0872 12.2047L29.5039 10.4947L27.7922 9.91134C27.4798 9.80518 27.2059 9.60865 27.0052 9.34665C26.8045 9.08465 26.6862 8.76898 26.6651 8.43964C26.6441 8.1103 26.7212 7.78212 26.8869 7.4967C27.0525 7.21127 27.2992 6.98144 27.5956 6.83634L27.7922 6.75634L29.5022 6.17301L30.0856 4.46134C30.198 4.13205 30.4106 3.84619 30.6936 3.64384C30.9767 3.44149 31.316 3.3328 31.6639 3.33301Z" fill="white"/>
+          </svg>
+
+          <!-- Stimuler full logo — original stimuler logo.svg, overlays feedback at center -->
+          <svg id="stimulerLogo" class="icon" viewBox="0 0 59 59" fill="none">
+            <g filter="url(#filter0_d_logo)">
+              <circle cx="29.0078" cy="28.21" r="20" fill="#2A2A2A"/>
+              <path d="M35.7536 17.1399C36.9961 16.99 38.3016 17.4048 39.315 18.1106C39.354 18.1374 39.3926 18.1648 39.4309 18.1926C39.4692 18.2205 39.5072 18.2488 39.5448 18.2775C39.5824 18.3063 39.6196 18.3355 39.6565 18.3652C39.6934 18.3949 39.7299 18.425 39.766 18.4556C39.8021 18.4862 39.8379 18.5173 39.8732 18.5487C39.9086 18.5802 39.9436 18.6122 39.9781 18.6445C40.0127 18.6769 40.0469 18.7096 40.0806 18.7428C40.1144 18.776 40.1477 18.8096 40.1806 18.8437C40.2135 18.8777 40.246 18.9121 40.2781 18.947C40.3101 18.9818 40.3417 19.017 40.3729 19.0526C40.4041 19.0883 40.4349 19.1243 40.4652 19.1606C40.4955 19.197 40.5253 19.2338 40.5547 19.2709C40.5841 19.308 40.613 19.3455 40.6414 19.3833C40.6699 19.4212 40.6979 19.4594 40.7254 19.4979C40.7529 19.5365 40.7799 19.5753 40.8064 19.6145C40.833 19.6537 40.8591 19.6933 40.8846 19.7331C40.9102 19.773 40.9352 19.8131 40.9598 19.8536C40.9844 19.8941 41.0084 19.9349 41.0319 19.9759C41.0555 20.017 41.0786 20.0583 41.1011 20.1C41.1236 20.1416 41.1456 20.1835 41.1671 20.2257C41.1886 20.2679 41.2095 20.3104 41.2299 20.3531C41.2504 20.3958 41.2703 20.4387 41.2896 20.4819C41.309 20.5252 41.3278 20.5686 41.3461 20.6123C41.3644 20.6559 41.3821 20.6998 41.3993 20.7439C41.4165 20.788 41.4332 20.8323 41.4493 20.8769C41.4654 20.9214 41.4809 20.9661 41.4959 21.011C41.5109 21.0559 41.5253 21.101 41.5392 21.1463C41.5531 21.1916 41.5664 21.237 41.5791 21.2826C41.5918 21.3282 41.604 21.3739 41.6156 21.4198C41.6272 21.4657 41.6383 21.5118 41.6487 21.558C41.6592 21.6041 41.6691 21.6504 41.6784 21.6968C41.6877 21.7433 41.6964 21.7898 41.7046 21.8364C41.7129 21.8833 41.7207 21.9303 41.7279 21.9775C41.7351 22.0246 41.7417 22.0718 41.7477 22.119C41.7537 22.1663 41.7591 22.2136 41.764 22.261C41.7689 22.3084 41.7731 22.3559 41.7768 22.4034C41.7805 22.4509 41.7836 22.4985 41.7861 22.546C41.7886 22.5936 41.7906 22.6412 41.7919 22.6889C41.7933 22.7365 41.794 22.7841 41.7942 22.8318C41.7944 22.8794 41.794 22.9271 41.793 22.9747C41.792 23.0224 41.7904 23.07 41.7882 23.1176C41.7861 23.1652 41.7833 23.2127 41.7799 23.2603C41.7766 23.3078 41.7727 23.3553 41.7682 23.4027C41.7637 23.4502 41.7586 23.4975 41.7529 23.5449C41.7472 23.5922 41.741 23.6394 41.7341 23.6866C41.7273 23.7337 41.7199 23.7808 41.7119 23.8278C41.7039 23.8747 41.6953 23.9216 41.6862 23.9684C41.6771 24.0151 41.6673 24.0618 41.657 24.1083C41.6467 24.1548 41.6359 24.2012 41.6244 24.2475C41.613 24.2937 41.601 24.3399 41.5884 24.3858C41.5759 24.4318 41.5627 24.4776 41.549 24.5232C41.5353 24.5689 41.5211 24.6143 41.5062 24.6596C41.4914 24.7049 41.4761 24.75 41.4601 24.7949C41.4442 24.8398 41.4277 24.8845 41.4107 24.929C41.3937 24.9735 41.3761 25.0178 41.358 25.0619C41.3399 25.106 41.3212 25.1498 41.302 25.1934C41.2828 25.237 41.2631 25.2804 41.2428 25.3235C41.2226 25.3667 41.2018 25.4095 41.1805 25.4522C41.1592 25.4948 41.1373 25.5371 41.115 25.5792C41.0926 25.6213 41.0697 25.6631 41.0463 25.7046C41.023 25.7461 40.9991 25.7873 40.9747 25.8283C40.9503 25.8692 40.9254 25.9098 40.9 25.9501C40.8746 25.9905 40.8487 26.0305 40.8223 26.0701C40.7959 26.1098 40.7691 26.1491 40.7417 26.1882C39.9457 27.314 38.5442 28.2952 37.1685 28.5311L37.1233 28.5369C36.5605 28.603 36.0902 28.4231 35.654 28.07C34.6389 27.2485 33.5773 25.5086 32.8471 24.4029C32.3385 23.633 31.7798 22.8435 31.3818 22.0105C31.2551 21.7454 31.1452 21.4646 31.1146 21.1705C31.0445 20.496 31.1395 19.9721 31.5731 19.4412C32.6452 18.1285 34.0541 17.3052 35.7536 17.1399Z" fill="white"/>
+              <path d="M25.2578 47.8598C25.5941 47.8116 26.1078 47.8598 26.4677 47.5023C26.6146 47.294 26.646 46.9451 26.6698 46.6987C26.7485 45.8808 26.7478 45.0472 26.7619 44.2257L26.8137 40.7013L26.8315 39.2909C26.834 39.1102 26.8678 38.8965 26.835 38.7205C26.773 38.3886 26.4893 37.9502 26.3353 37.6403C26.1319 37.2281 25.9323 36.814 25.7365 36.3981C25.5334 35.959 25.3793 35.4702 25.1393 35.0521C25.0455 34.8887 24.9314 34.7369 24.7692 34.636C24.4826 34.4578 24.1162 34.5224 23.8086 34.6039C23.2252 34.7586 22.6526 35.0362 22.1099 35.2962C21.4484 35.6131 20.7929 35.9446 20.1167 36.2295C19.6621 36.4211 19.1745 36.6156 18.6816 36.6683C18.3494 36.7038 18.0348 36.6644 17.7399 36.4968C17.0723 36.1177 16.5271 35.3295 16.3299 34.5967C16.2222 34.1965 16.2173 33.6754 16.4393 33.3129C16.7154 32.8616 18.047 31.7434 18.4949 31.3424C20.3756 29.6702 22.279 28.0243 24.2053 26.4048C25.2744 25.5048 26.3391 24.5602 27.4648 23.7321C27.7846 23.4968 28.1712 23.2213 28.5634 23.1264C28.9119 23.0421 29.2394 23.1208 29.5371 23.3115C30.3653 23.8422 32.3572 26.9053 32.8393 27.8879C32.9455 28.1046 33.0376 28.3381 33.0872 28.5749C33.168 28.9605 33.0671 29.2981 32.8562 29.6194C32.4736 30.2023 31.721 30.8714 31.2186 31.3822C31.1661 32.2181 31.1193 33.0542 31.0782 33.8907C31.0334 34.6999 31.0128 35.5538 30.7826 36.3355C30.6089 36.9252 29.7239 38.3171 29.6861 38.6311C29.6495 38.9351 29.6732 39.2645 29.6732 39.5715V41.2805L29.6747 44.4178C29.6754 45.208 29.6455 46.0348 29.7667 46.8166C29.8156 47.1325 29.9058 47.3674 30.1169 47.6113C30.4368 47.9811 30.7103 48.0159 31.0078 48.1098C29.2828 48.3098 26.9328 48.2098 25.2578 47.8598Z" fill="white"/>
+            </g>
+            <mask id="mask0_logo" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="9" y="8" width="41" height="41">
+              <circle cx="29.0078" cy="28.21" r="20" fill="white"/>
+            </mask>
+            <g mask="url(#mask0_logo)">
+              <g filter="url(#filter1_f_logo)">
+                <ellipse cx="24.6593" cy="20.5799" rx="10.4439" ry="11.1143" transform="rotate(34.9456 24.6593 20.5799)" fill="white" fill-opacity="0.2"/>
+              </g>
+            </g>
+            <defs>
+              <filter id="filter0_d_logo" x="-0.00189686" y="0.000251472" width="58.0194" height="58.0214" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feOffset dy="0.8"/>
+                <feGaussianBlur stdDeviation="4.50485"/>
+                <feComposite in2="hardAlpha" operator="out"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_logo"/>
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_logo" result="shape"/>
+              </filter>
+              <filter id="filter1_f_logo" x="2.87717" y="-1.43142" width="43.5621" height="44.023" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                <feGaussianBlur stdDeviation="5.55555" result="effect1_foregroundBlur_logo"/>
+              </filter>
+            </defs>
+          </svg>
+
+        </div>
+      </div>
+<script id="animationScript">
+    const feedbackEl = document.getElementById('feedbackIcon');
+    const logoEl = document.getElementById('stimulerLogo');
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    // Phase timing
+    let SEPARATED_MS    = 800;
+    let FUSE_MS         = 1100;
+    let TO_LOGO_MS      = 850;   // star scales down → swap → logo scales up
+    let LOGO_HOLD_MS    = 1600;
+    let LOGO_COLLAPSE_MS = 450;  // logo scales down
+    let EMERGE_MS       = 1100;  // all 3 icons emerge from center with rotation
+
+    const SWAP_AT = 0.5; // fraction of phase duration at which to hide/show the swap
+
+    function buildPhases() {
+      return [
+        { name: 'separated',     duration: SEPARATED_MS },
+        { name: 'rotateAndFuse', duration: FUSE_MS },
+        { name: 'toLogo',        duration: TO_LOGO_MS },
+        { name: 'logoHold',      duration: LOGO_HOLD_MS },
+        { name: 'logoCollapse',  duration: LOGO_COLLAPSE_MS },
+        { name: 'emergeAll',     duration: EMERGE_MS }
+      ];
+    }
+    let PHASES = buildPhases();
+
+    let phaseIdx = 0;
+    let phaseStart = performance.now();
+    let swapped = false;
+    let isPaused = false;
+
+    function setTrans(el, props, duration, easing = 'cubic-bezier(0.4, 0, 0.2, 1)') {
+      el.style.transition = props.map(p => `${p} ${duration}ms ${easing}`).join(', ');
+    }
+
+    function enterPhase(idx) {
+      const p = PHASES[idx];
+      phaseStart = performance.now();
+
+      switch (p.name) {
+        case 'separated':
+          // Feedback at center, logo hidden
+          setTrans(feedbackEl, ['transform', 'opacity'], 0);
+          setTrans(logoEl, ['transform', 'opacity'], 0);
+          feedbackEl.style.transform = 'translateX(0px) rotate(0deg) scale(1)';
+          feedbackEl.style.opacity = '1';
+          logoEl.style.transform = 'scale(0)';
+          logoEl.style.opacity = '0';
+          break;
+
+        case 'rotateAndFuse':
+          // Feedback rotates in place
+          setTrans(feedbackEl, ['transform'], p.duration, 'cubic-bezier(0.45, 0.05, 0.55, 0.95)');
+          feedbackEl.style.transform = 'translateX(0px) rotate(360deg) scale(1)';
+          break;
+
+        case 'toLogo':
+          // rAF drives: feedback scales 1→0, swap at midpoint, logo scales 0→1
+          feedbackEl.style.transition = 'none';
+          logoEl.style.transition = 'none';
+          swapped = false;
+          break;
+
+        case 'logoHold':
+          break;
+
+        case 'logoCollapse':
+          // rAF drives: logo scales 1→0
+          logoEl.style.transition = 'none';
+          break;
+
+        case 'emergeAll':
+          // Snap feedback to scale 0, logo hidden
+          feedbackEl.style.transition = 'none';
+          feedbackEl.style.transform = 'translateX(0px) rotate(0deg) scale(0)';
+          feedbackEl.style.opacity = '1';
+          logoEl.style.transition = 'none';
+          logoEl.style.transform = 'scale(0)';
+          logoEl.style.opacity = '0';
+
+          // Force reflow
+          feedbackEl.offsetHeight;
+
+          // Feedback emerges with full rotation back to scale 1
+          setTrans(feedbackEl, ['transform'], p.duration, 'cubic-bezier(0.4, 0, 0.2, 1)');
+          feedbackEl.style.transform = 'translateX(0px) rotate(360deg) scale(1)';
+          break;
+      }
+    }
+
+    enterPhase(0);
+
+
+    function tick(now) {
+      if (isPaused) {
+        requestAnimationFrame(tick);
+        return;
+      }
+      const p = PHASES[phaseIdx];
+      const elapsed = now - phaseStart;
+      const t = Math.min(elapsed / p.duration, 1);
+
+      if (p.name === 'toLogo') {
+        if (t < SWAP_AT) {
+          // First half: feedback scales 1 → 0
+          const sub = t / SWAP_AT;
+          const scale = 1 - easeInOutCubic(sub);
+          feedbackEl.style.transform = `translateX(0px) rotate(0deg) scale(${scale})`;
+        } else {
+          // At swap: hide feedback, show logo at scale 0
+          if (!swapped) {
+            swapped = true;
+            feedbackEl.style.transform = 'translateX(0px) rotate(0deg) scale(0)';
+            feedbackEl.style.opacity = '0';
+            logoEl.style.opacity = '1';
+          }
+          // Second half: logo scales 0 → 1
+          const sub = (t - SWAP_AT) / (1 - SWAP_AT);
+          const scale = easeInOutCubic(sub);
+          logoEl.style.transform = `scale(${scale})`;
+        }
+      }
+
+      if (p.name === 'logoCollapse') {
+        // Logo scales 1 → 0
+        const scale = 1 - easeInOutCubic(t);
+        logoEl.style.transform = `scale(${scale})`;
+      }
+
+      if (t >= 1) {
+        phaseIdx = (phaseIdx + 1) % PHASES.length;
+        enterPhase(phaseIdx);
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    // Playback controls
+    function pauseAnim() {
+      if (isPaused) return;
+      isPaused = true;
+      [feedbackEl, logoEl].forEach(el => {
+        const ct = getComputedStyle(el).transform;
+        const co = getComputedStyle(el).opacity;
+        el.style.transition = 'none';
+        if (ct !== 'none') el.style.transform = ct;
+        el.style.opacity = co;
+      });
+    }
+
+    function playAnim() {
+      if (!isPaused) return;
+      isPaused = false;
+      phaseStart = performance.now();
+      enterPhase(phaseIdx);
+    }
+
+    function replayAnim() {
+      isPaused = false;
+      phaseIdx = 0;
+      phaseStart = performance.now();
+      enterPhase(0);
+    }
+
+    window.playAnim = playAnim;
+    window.pauseAnim = pauseAnim;
+    window.replayAnim = replayAnim;
+  </script>
+</body></html>
