@@ -135,13 +135,14 @@ body{background:#1d1d1f;min-height:100vh;display:flex;align-items:center;justify
 .ss-head .t{font-size:16px;font-weight:600;color:#f2ece2}
 .ss-head .x{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .ss-head .x svg{width:15px;height:15px;stroke:#e9dfce;stroke-width:2.4;fill:none}
-.langwidget{position:absolute;left:50%;bottom:200px;transform:translateX(-50%) translateY(12px);z-index:15;padding:8px;border-radius:16px;
-  background:linear-gradient(180deg,rgba(52,43,29,.72),rgba(28,22,14,.82));backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
-  border:1px solid rgba(255,224,176,.2);box-shadow:0 14px 40px -14px rgba(0,0,0,.7);
+.langwidget{position:absolute;left:50%;bottom:215px;transform:translateX(-50%) translateY(12px);z-index:15;padding:10px;border-radius:20px;
+  background:linear-gradient(180deg,rgba(52,43,29,.74),rgba(28,22,14,.84));backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+  border:1px solid rgba(255,224,176,.22);box-shadow:0 16px 46px -14px rgba(0,0,0,.7);
   opacity:0;visibility:hidden;transition:opacity .38s var(--ease),transform .38s var(--ease)}
 .screen.langmoment .langwidget{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
-.langwidget .seg{background:rgba(0,0,0,.28)}
-.langwidget .taphand{position:absolute;right:-4px;bottom:-32px;width:58px;height:58px;pointer-events:none;display:none;filter:drop-shadow(0 3px 5px rgba(0,0,0,.5))}
+.langwidget .seg{background:rgba(0,0,0,.3);padding:5px;gap:5px;border-radius:16px}
+.langwidget .seg button{padding:14px 32px;font-size:16.5px;font-weight:600;border-radius:12px}
+.langwidget .taphand{position:absolute;right:-2px;bottom:-34px;width:60px;height:60px;pointer-events:none;display:none;filter:drop-shadow(0 3px 5px rgba(0,0,0,.5))}
 .screen.langmoment .langwidget .taphand{display:block;animation:tap 1.2s var(--ease) infinite}
 
 /* ============ SWITCH WARNING + LOADING ============ */
@@ -572,8 +573,8 @@ $('#video').addEventListener('click',e=>{if(e.target.closest('.dock')||e.target.
   if(dock.classList.contains('show'))hideControls();else showControls();});
 
 /* 10s timestamp → minimal video-language widget floating above the dock */
-function showLangWidget(){$('#video').classList.add('langmoment');clearTimeout(hideT);dock.classList.add('show');clearTimeout(widgetT);widgetT=setTimeout(hideLangWidget,15000);}
-function hideLangWidget(){clearTimeout(widgetT);$('#video').classList.remove('langmoment');dock.classList.remove('show');}
+function showLangWidget(){$('#video').classList.add('langmoment');stopCaps();$('#capMain').innerHTML='Do you wanna change the <span class="g">video language</span>?';$('#vCaps').classList.add('nosub');clearTimeout(widgetT);widgetT=setTimeout(hideLangWidget,15000);}
+function hideLangWidget(){clearTimeout(widgetT);$('#video').classList.remove('langmoment');startCaps();}
 $('#langWidget').addEventListener('click',e=>{clearTimeout(widgetT);widgetT=setTimeout(hideLangWidget,15000);});
 function triggerMoment(){show('video');showLangWidget();}
 

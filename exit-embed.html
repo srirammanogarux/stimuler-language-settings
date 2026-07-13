@@ -71,7 +71,11 @@ body{font-family:'Urbanist',system-ui,sans-serif;background:#0b0b0b;color:#fff;o
 .round-btn{width:34px;height:34px;border-radius:50%;background:rgba(70,60,48,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);transition:.2s var(--ease)}
 .round-btn svg{width:17px;height:17px;stroke:#efe7d8;fill:none;stroke-width:2.2}
 .sheet-head{text-align:center;margin-top:14px}
-.sheet-title{font-size:20px;font-weight:500;letter-spacing:-.005em;line-height:1.32;max-width:340px;margin:0 auto}
+.sheet-title{font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1.28;max-width:340px;margin:0 auto}
+.sheet-sub{margin-top:9px;font-size:15px;color:var(--warm-muted);text-align:center;line-height:1.4}
+.reasons{margin:22px 0 6px}
+.reasons .rep-chips{justify-content:center;gap:9px}
+.reasons .rep-chip{font-size:14px;padding:11px 16px}
 .controls{display:flex;flex-direction:column;gap:0;margin:24px 0 0}
 .seg{display:flex;gap:4px;background:#161208;border:1px solid var(--line);border-radius:12px;padding:4px;flex:0 0 auto}
 .seg button{border:0;background:transparent;color:#9a9183;font-family:inherit;font-weight:400;font-size:13px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:.2s var(--ease);min-width:32px}
@@ -189,36 +193,18 @@ body{font-family:'Urbanist',system-ui,sans-serif;background:#0b0b0b;color:#fff;o
       <div class="thumb-glow"></div>
       <div class="thumb"><img src="assets/sarah-thumb.png" alt="Sarah" /></div>
       <div class="sheet-top"><div class="round-btn" id="closeSheet" title="Close"><svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div></div>
-      <div class="sheet-head"><h2 class="sheet-title">Leaving already? Use the controls below &amp; keep going!</h2></div>
-      <div class="controls">
-        <div class="cards">
-          <div class="card lang-card">
-            <span class="card-waves" aria-hidden="true"></span>
-            <span class="new-flag new-badge">NEW</span>
-            <div class="ico"><svg viewBox="0 0 24 24"><rect width="14" height="12" x="2" y="6" rx="2"/><path d="m22 8-6 4 6 4V8Z"/></svg></div>
-            <div class="meta"><div class="t">Video language</div></div>
-            <div class="seg" id="exitLangSeg"><button class="sel" data-lang="en">English</button><button data-lang="es">Spanish</button></div>
-            <span class="tap-finger" aria-hidden="true">👆</span>
-          </div>
-          <div class="card card-speed">
-            <div class="section-label">Playback speed</div>
-            <div class="slider2" id="speedSlider" data-min="0.5" data-max="2" data-step="0.1" data-value="1">
-              <div class="s-track"></div><div class="s-fill"></div><div class="s-dots" id="speedDots"></div>
-              <div class="s-pill" id="speedPill">1×</div><div class="s-bar" id="speedBar"></div>
-            </div>
-          </div>
-        </div>
-        <div class="leave-reason">
-          <button class="reason-toggle" id="reasonToggle"><span>Report an issue</span>
-            <svg class="chev" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="reason-body" id="reasonBody">
-            <div class="rep-chips" data-chips>
-              <button class="rep-chip">Video won’t play</button><button class="rep-chip">Audio issue</button>
-              <button class="rep-chip">Buffering</button><button class="rep-chip">Wrong content</button>
-              <button class="rep-chip">Something else</button>
-            </div>
-          </div>
+      <div class="sheet-head">
+        <h2 class="sheet-title">Leaving already?</h2>
+        <p class="sheet-sub">Before you go, what made you stop?</p>
+      </div>
+      <div class="reasons">
+        <div class="rep-chips" data-chips>
+          <button class="rep-chip">Too difficult</button>
+          <button class="rep-chip">No time right now</button>
+          <button class="rep-chip">Feeling tired</button>
+          <button class="rep-chip">Not interested</button>
+          <button class="rep-chip">Technical issue</button>
+          <button class="rep-chip">Just exploring</button>
         </div>
       </div>
       <div class="sheet-foot">
@@ -273,17 +259,16 @@ const FLAG='<svg viewBox="0 0 256 256" fill="none"><line x1="48" y1="222" x2="48
 $('#gearHot').innerHTML=GEAR;$('#flagVideo').innerHTML=FLAG;
 
 /* exit sheet */
-function resetSheet(){$('#repThanks').hidden=true;$$('.rep-chip.sel').forEach(c=>c.classList.remove('sel'));$('#reasonToggle').classList.remove('open');$('#reasonBody').classList.remove('open');updateCTA();}
-$('#reasonToggle').onclick=function(){this.classList.toggle('open');$('#reasonBody').classList.toggle('open');};
+function resetSheet(){$('#repThanks').hidden=true;$$('.rep-chip.sel').forEach(c=>c.classList.remove('sel'));}
 function openSheet(){resetSheet();video.classList.add('sheet-open');}
 function closeSheet(){video.classList.remove('sheet-open');setTimeout(resetSheet,300);}
 $('#closeSheet').onclick=closeSheet;
 const anyChip=()=>$$('.rep-chip.sel').length>0;
-function updateCTA(){$('#keepBtn').textContent=anyChip()?'Send report':'Keep learning';}
-$('[data-chips]').addEventListener('click',e=>{const c=e.target.closest('.rep-chip');if(!c)return;c.classList.toggle('sel');updateCTA();});
-$('#keepBtn').onclick=()=>{if(anyChip()){$('#repThanks').hidden=false;}else{closeSheet();toast('Back to your lesson ✦');}};
-$('#endBtn').onclick=()=>{closeSheet();toast('Session ended · streak still safe');};
-$('#thanksBack').onclick=()=>{closeSheet();toast('Back to your lesson ✦');};
+/* reason chips: single-select */
+$('[data-chips]').addEventListener('click',e=>{const c=e.target.closest('.rep-chip');if(!c)return;const on=c.classList.contains('sel');$$('.rep-chip').forEach(x=>x.classList.remove('sel'));if(!on)c.classList.add('sel');});
+$('#keepBtn').onclick=()=>{closeSheet();toast('Back to your lesson ✦');};
+$('#endBtn').onclick=()=>{if(anyChip()){$('#repThanks').hidden=false;}else{closeSheet();toast('Session ended · streak safe');}};
+$('#thanksBack').onclick=()=>{closeSheet();toast('Session ended · streak safe');};
 
 /* permission sheet */
 function openPerm(){video.classList.add('perm-open');}
@@ -292,12 +277,7 @@ $('#permClose').onclick=closePerm;
 $('#permKeep').onclick=()=>{closePerm();toast('Keeping English');};
 $('#permSwitch').onclick=()=>{ openWarn(); };   // reactivation / permission: confirm before switching
 
-/* language toggle in exit sheet: English selects, Spanish opens the warning */
-$('#exitLangSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
-  if(b.dataset.lang==='es'){ openWarn(); return; }
-  selectLang('en');});
-function selectLang(l){$('#exitLangSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('sel',b.dataset.lang===l));}
-function resetLang(){selectLang('en');}
+function resetLang(){}
 
 /* ===== switch warning + loading (same as main flow) ===== */
 function openWarn(){video.classList.add('warn');}
@@ -307,7 +287,6 @@ $('#warnSure').onclick=()=>{closeWarn();video.classList.add('loading');
   setTimeout(()=>{video.classList.remove('loading');applySpanish();},2200);};
 function applySpanish(){
   video.classList.remove('react-coach');
-  selectLang('es');
   const cap=document.querySelector('.caps .big');if(cap)cap.innerHTML='¡Hola! Bienvenido a <span class="g">Stimuler</span>';
   // switching language always leads straight to the (now Spanish) video — never back to a sheet.
   closePerm();
