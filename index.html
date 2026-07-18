@@ -406,15 +406,15 @@ if(location.protocol.indexOf('http')===0)document.documentElement.style.zoom='0.
 
       <div class="vdim" id="vDim"></div>
       <div class="warnsheet">
-        <div class="warn-ico"><svg viewBox="0 0 256 256" fill="none"><path d="M128 24 8 224h240Z" stroke="currentColor" stroke-width="16" stroke-linejoin="round"/><path d="M128 104v40" stroke="currentColor" stroke-width="16" stroke-linecap="round"/><circle cx="128" cy="180" r="10" fill="currentColor"/></svg></div>
-        <h2 class="warn-h">Switch video language to Spanish?</h2>
-        <p class="warn-p">You'll lose your progress and the lesson will <b>restart from the beginning</b> in Spanish.</p>
+        <div class="warn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h9M9 3v2M6 5c0 5 3 8 6 8M13 5c0 4-4 7-7 8"/><path d="m13 21 4-9 4 9M14.5 17h5"/></svg></div>
+        <h2 class="warn-h" id="warnTitle">Switch this video to Spanish?</h2>
+        <p class="warn-p" id="warnDesc">This video will <b>restart from the beginning</b> in Spanish. Your lesson progress is saved.</p>
         <div class="warn-foot">
           <button class="btn-primary" id="warnSure">Yes, switch to Spanish</button>
           <button class="btn-ghost" id="warnCancel">Keep English</button>
         </div>
       </div>
-      <div class="loadbox"><iframe class="loaderframe" src="stimuler-loader.html" title="Loading"></iframe><div class="lt">Loading your Spanish lesson…</div><div class="ls">Restarting from the beginning</div></div>
+      <div class="loadbox"><iframe class="loaderframe" src="stimuler-loader.html" title="Loading"></iframe><div class="lt" id="loadLt">Loading in Spanish…</div><div class="ls">Restarting this video</div></div>
     </div>
 
     <!-- ============ READING ============ -->
@@ -506,7 +506,7 @@ if(location.protocol.indexOf('http')===0)document.documentElement.style.zoom='0.
     <!-- settings: confirm popup for language switches -->
     <div class="set-dim" id="setDim"></div>
     <div class="set-pop" id="setPop">
-      <div class="warn-ico"><svg viewBox="0 0 256 256" fill="none"><path d="M128 24 8 224h240Z" stroke="currentColor" stroke-width="16" stroke-linejoin="round"/><path d="M128 104v40" stroke="currentColor" stroke-width="16" stroke-linecap="round"/><circle cx="128" cy="180" r="10" fill="currentColor"/></svg></div>
+      <div class="warn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h9M9 3v2M6 5c0 5 3 8 6 8M13 5c0 4-4 7-7 8"/><path d="m13 21 4-9 4 9M14.5 17h5"/></svg></div>
       <h2 class="warn-h" id="setPopTitle">Are you sure?</h2>
       <p class="warn-p" id="setPopDesc"></p>
       <div class="warn-foot"><button class="btn-primary" id="setPopYes">Yes, switch</button><button class="btn-ghost" id="setPopNo">Cancel</button></div>
@@ -591,17 +591,21 @@ function syncLangSegs(){$$('#langSeg button, #wLangSeg button').forEach(b=>b.cla
 function applyLang(){const es=vlang==='es';$('#subSeg').classList.toggle('off',es);$('#translate').style.opacity=es?'.35':'.85';
   if(es)$$('#subSeg button').forEach(b=>b.classList.remove('sel'));syncLangSegs();}
 [$('#langSeg'),$('#wLangSeg')].forEach(seg=>{if(!seg)return;seg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
-  if(b.dataset.lang==='es'&&vlang!=='es'){openWarn();return;}
-  if(b.dataset.lang==='en'&&vlang!=='en')toEnglish();});});
+  if(b.dataset.lang!==vlang)openWarn(b.dataset.lang);});});
 $('#subSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||vlang==='es')return;
   $$('#subSeg button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');
   $('#vCaps').classList.toggle('nosub',b.dataset.sub!=='both');});
 
 /* switch to Spanish: warning → loading → restart */
-function openWarn(){$('#video').classList.add('warn');}
+let pendingVLang=null;
+function openWarn(target){pendingVLang=target||'es';const es=pendingVLang==='es',name=es?'Spanish':'English';
+  $('#warnTitle').textContent='Switch this video to '+name+'?';
+  $('#warnDesc').innerHTML='This video will <b>restart from the beginning</b> in '+name+'. Your lesson progress is saved.';
+  $('#warnSure').textContent='Yes, switch to '+name;$('#warnCancel').textContent='Keep '+(es?'English':'Spanish');
+  $('#video').classList.add('warn');}
 function closeWarn(){$('#video').classList.remove('warn');}
-$('#warnCancel').onclick=()=>{closeWarn();vlang='en';applyLang();};
-$('#warnSure').onclick=()=>{closeWarn();$('#video').classList.add('loading');setTimeout(()=>{$('#video').classList.remove('loading');toSpanish();},2200);};
+$('#warnCancel').onclick=()=>{closeWarn();pendingVLang=null;applyLang();};
+$('#warnSure').onclick=()=>{const t=pendingVLang||'es';closeWarn();$('#loadLt').textContent='Loading in '+(t==='es'?'Spanish':'English')+'…';$('#video').classList.add('loading');setTimeout(()=>{$('#video').classList.remove('loading');if(t==='es')toSpanish();else toEnglish();pendingVLang=null;},2200);};
 function toSpanish(){vlang='es';$('#vCaps').classList.add('nosub');applyLang();hideLangWidget();closeSetSheet();hideControls();playVideo();startCaps();clearTimeout(lessonTimer);lessonTimer=setTimeout(goReading,3800);}
 function goReading(){hideControls();const a=$('#vAvatar'),r=$('#vRing');
   a.style.transform='translateY(-130px) scale(.5)';a.style.opacity='0';r.style.transform='translateY(-130px) scale(.5)';r.style.opacity='0';
@@ -652,7 +656,7 @@ $('#settings').addEventListener('click',e=>{const b=e.target.closest('.lang-seg 
   $('#setPopTitle').textContent=(isApp?'Switch app language to ':'Switch video language to ')+lang+'?';
   $('#setPopDesc').innerHTML=isApp
     ? 'Your subtitles and all in-app guidance will change to <b>'+lang+'</b>.'
-    : 'Your guided video lessons will switch to <b>'+lang+'</b> and your current lesson will <b>restart from the beginning</b>.';
+    : 'Your video lessons will now play in <b>'+lang+'</b>.';
   $('#setPopYes').textContent='Yes, switch to '+lang;
   $('#setDim').classList.add('on');$('#setPop').classList.add('on');});
 function closeSetPop(){$('#setDim').classList.remove('on');$('#setPop').classList.remove('on');pendingLang=null;}
